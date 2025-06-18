@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mr Bio - المنصة التعليمية الرائدة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0d1b3a, #1a2a6c, #4a235a);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            padding: 20px;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(178, 31, 31, 0.15) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(26, 42, 108, 0.2) 0%, transparent 25%);
+            z-index: -1;
+        }
+        
+        .container {
+            display: flex;
+            width: 95%;
+            max-width: 1300px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.97), rgba(245, 245, 255, 0.95));
+            border-radius: 25px;
+            box-shadow: 
+                0 20px 50px rgba(0, 0, 0, 0.4),
+                inset 0 -3px 10px rgba(255, 255, 255, 0.4),
+                inset 0 3px 10px rgba(255, 255, 255, 0.4);
+            overflow: hidden;
+            position: relative;
+            transform: translateY(30px);
+            opacity: 0;
+            animation: fadeInUp 1s 0.3s forwards;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        /* تصميم الجزء الأيسر مع الخلفية المنحرفة */
+        .left-section {
+            flex: 0 0 42%;
+            position: relative;
+            overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 85% 100%, 0 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px;
+            z-index: 1;
+        }
+        
+        .left-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(45deg, rgba(26, 42, 108, 0.88), rgba(178, 31, 31, 0.82)),
+                url('https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80') no-repeat center center;
+            background-size: cover;
+            z-index: -1;
+        }
+        
+        .logo-container {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-circle {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ff8a00, #e52e71);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .logo-circle i {
+            font-size: 28px;
+            color: white;
+        }
+        
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .left-content {
+            max-width: 90%;
+            margin-top: 60px;
+        }
+        
+        .welcome-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: white;
+            line-height: 1.2;
+            margin-bottom: 25px;
+            text-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
+        }
+        
+        .welcome-title span {
+            color: #ffd700;
+            display: block;
+        }
+        
+        .description {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.7;
+            margin-bottom: 35px;
+            max-width: 90%;
+        }
+        
+        .stats {
+            display: flex;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #ffd700;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        
+        /* تصميم الجزء الأيمن */
+        .right-section {
+            flex: 1;
+            padding: 60px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .title {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+        
+        .title h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(to right, #1a2a6c, #b21f1f);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -1px;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 5px;
+            background: linear-gradient(to right, #1a2a6c, #b21f1f);
+            border-radius: 3px;
+        }
+        
+        /* تصميم الأزرار */
+        .buttons-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 35px;
+        }
+        
+        .button {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 
+                0 12px 25px rgba(0, 0, 0, 0.15),
+                inset 0 -3px 8px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            height: 280px;
+            position: relative;
+            border: none;
+            transform: translateY(0);
+        }
+        
+        .button:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.25),
+                inset 0 -3px 10px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+        
+        .button-image {
+            flex: 1;
+            background-size: cover;
+            background-position: center;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .button-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3));
+        }
+        
+        .button-content {
+            padding: 20px;
+            text-align: center;
+            background-color: white;
+            position: relative;
+        }
+        
+        .button-content::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            background: white;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        }
+        
+        .button-title {
+            color: #1a2a6c;
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .button-desc {
+            color: #666;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        
+        .button-icon {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: #1a2a6c;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            z-index: 2;
+        }
+        
+        /* خلفيات الأزرار */
+        .btn1 .button-image {
+            background: url('https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80') no-repeat center center;
+            background-size: cover;
+        }
+        
+        .btn2 .button-image {
+            background: url('https://images.unsplash.com/photo-1589652717521-10c0d092dea9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80') no-repeat center center;
+            background-size: cover;
+        }
+        
+        .btn3 .button-image {
+            background: url('https://images.unsplash.com/photo-1495446815901-a7297e633e8d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80') no-repeat center center;
+            background-size: cover;
+        }
+        
+        .btn4 .button-image {
+            background: url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80') no-repeat center center;
+            background-size: cover;
+        }
+        
+        /* تصميم الأيقونات */
+        .btn1 .button-icon {
+            background: linear-gradient(135deg, #3498db, #1a5276);
+            color: white;
+        }
+        
+        .btn2 .button-icon {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+        
+        .btn3 .button-icon {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+        }
+        
+        .btn4 .button-icon {
+            background: linear-gradient(135deg, #f39c12, #d35400);
+            color: white;
+        }
+        
+        /* التذييل */
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #666;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+        }
+        
+        .social-links a {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .social-links a:hover {
+            transform: translateY(-5px) rotate(5deg);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+        }
+        
+        /* التصميم للجوال */
+        @media (max-width: 992px) {
+            .container {
+                flex-direction: column;
+                max-width: 700px;
+            }
+            
+            .left-section {
+                flex: 0 0 400px;
+                clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+                padding: 30px;
+            }
+            
+            .logo-container {
+                top: 20px;
+                left: 20px;
+            }
+            
+            .welcome-title {
+                font-size: 2.2rem;
+            }
+            
+            .stats {
+                gap: 20px;
+            }
+            
+            .stat-number {
+                font-size: 1.8rem;
+            }
+            
+            .right-section {
+                padding: 40px 30px;
+            }
+            
+            .title h1 {
+                font-size: 3.2rem;
+            }
+            
+            .buttons-container {
+                gap: 25px;
+            }
+            
+            .button {
+                height: 250px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .buttons-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .left-section {
+                flex: 0 0 350px;
+            }
+            
+            .logo-text {
+                font-size: 1.5rem;
+            }
+            
+            .logo-circle {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .welcome-title {
+                font-size: 1.8rem;
+            }
+            
+            .description {
+                font-size: 1.1rem;
+            }
+            
+            .title h1 {
+                font-size: 2.8rem;
+            }
+            
+            .stat-item {
+                font-size: 0.9rem;
+            }
+            
+            .stat-number {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- الجانب الأيسر مع الخلفية المنحرفة والمحتوى -->
+        <div class="left-section">
+            <div class="logo-container">
+                <div class="logo-circle">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div class="logo-text">Mr Bio</div>
+            </div>
+            
+            <div class="left-content">
+                <h2 class="welcome-title">
+                    مرحبًا بك في المنصة التعليمية <span>الأكثر تميزًا</span>
+                </h2>
+                
+                <p class="description">
+                    نقدم لك أفضل المحتويات التعليمية في مجال الأحياء والعلوم، 
+                    دورات متكاملة، فيديوهات تعليمية، بث مباشر مع الخبراء، 
+                    وامتحانات تقييمية لضمان تحقيق أقصى استفادة.
+                </p>
+                
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-number">250+</div>
+                        <div class="stat-label">درس تعليمي</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">12K+</div>
+                        <div class="stat-label">طالب مسجل</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">98%</div>
+                        <div class="stat-label">رضا الطلاب</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- الجانب الأيمن مع العنوان والأزرار -->
+        <div class="right-section">
+            <div class="title">
+                <h1>Mr Bio</h1>
+            </div>
+            
+            <div class="buttons-container">
+                <!-- الزر الأول -->
+                 <a href="videoL.html" style="text-decoration: none; color: inherit;">
+                <div class="button btn1">
+                    <div class="button-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <div class="button-image"></div>
+                    <div class="button-content">
+                        <h3 class="button-title">فيديوهات تعليمية</h3>
+                        <p class="button-desc">دروس مصورة عالية الجودة في مختلف المجالات</p>
+                    </div>
+                </div>
+                </a>
+                
+                <!-- الزر الثاني -->
+                 <a href="liveL.html" style="text-decoration: none; color: inherit;">
+                <div class="button btn2">
+                    <div class="button-icon">
+                        <i class="fas fa-broadcast-tower"></i>
+                    </div>
+                    <div class="button-image"></div>
+                    <div class="button-content">
+                        <h3 class="button-title">بث مباشر</h3>
+                        <p class="button-desc">تفاعل مباشر مع الخبراء والمدربين</p>
+                    </div>
+                </div>
+                </a>
+                <!-- الزر الثالث -->
+                 <a href="pdfL.html" style="text-decoration: none; color: inherit;">
+                <div class="button btn3">
+                    <div class="button-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="button-image"></div>
+                    <div class="button-content">
+                        <h3 class="button-title">ملفات تعليمية PDF</h3>
+                        <p class="button-desc">ملخصات وشروحات بصيغة PDF للتحميل</p>
+                    </div>
+                </div>
+                </a>
+                <!-- الزر الرابع -->
+               <a href="examL.html" style="text-decoration: none; color: inherit;">
+  <div class="button btn4">
+    <div class="button-icon">
+      <i class="fas fa-file-alt"></i>
+    </div>
+    <div class="button-image"></div>
+    <div class="button-content">
+      <h3 class="button-title">امتحانات</h3>
+      <p class="button-desc">اختبارات تقييمية لقياس مستوى التقدم</p>
+    </div>
+  </div>
+</a>
+
+            
+            <div class="footer">
+                <p>جميع الحقوق محفوظة © 2025 Mr Bio</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // إضافة تأثيرات تفاعلية للأزرار
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttons = document.querySelectorAll('.button');
+            
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', function() {
+                    this.style.zIndex = '10';
+                });
+                
+                button.addEventListener('mouseleave', function() {
+                    setTimeout(() => {
+                        this.style.zIndex = '1';
+                    }, 300);
+                });
+            });
+            
+            // تأثيرات عند التحميل
+            setTimeout(() => {
+                buttons.forEach((btn, index) => {
+                    setTimeout(() => {
+                        btn.style.opacity = '1';
+                        btn.style.transform = 'translateY(0)';
+                    }, 200 * index);
+                });
+            }, 500);
+        });
+    </script>
+</body>
+</html>
