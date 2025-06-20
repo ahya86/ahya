@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Mr Lio - ملفات PDF التعليمية</title>
+<title>Mr Bio - ملفات PDF التعليمية</title>
 <style>
   /* الأنماط الأساسية المحسنة */
   * {
@@ -359,6 +359,41 @@
   .download-btn i {
     margin-left: 10px;
   }
+  
+  /* حلقة التحميل */
+  .loader-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .loader {
+    width: 60px;
+    height: 60px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 5px solid #f39c12;
+    animation: spin 1.5s linear infinite;
+    margin-bottom: 20px;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .loader-text {
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
@@ -367,7 +402,7 @@
 <header>
   <div class="container">
     <div class="header-content">
-      <div class="logo">Mr Lio</div>
+      <div class="logo">Mr Bio</div>
       <div class="nav-buttons">
         <button class="home-btn" onclick="window.location.href='startL.html'">
           <i class="fas fa-home"></i> الصفحة الرئيسية
@@ -384,7 +419,17 @@
 <section class="pdfs-section">
   <div class="container">
     <h2 class="section-title">ملفات PDF التعليمية</h2>
-    <div class="pdfs-grid" id="pdfsContainer"></div>
+    
+    <!-- حاوية حلقة التحميل -->
+    <div class="loader-container" id="loaderContainer">
+      <div class="loader"></div>
+      <div class="loader-text">جاري تحميل الملفات التعليمية...</div>
+    </div>
+    
+    <!-- حاوية ملفات PDF (مخفية في البداية) -->
+    <div class="pdfs-grid" id="pdfsContainer" style="display:none;"></div>
+    
+    <!-- رسالة عدم وجود ملفات -->
     <div class="no-pdfs" id="noPdfsMessage" style="display:none;">
       <div class="no-pdfs-icon"><i class="fas fa-file-pdf"></i></div>
       <p>لا توجد ملفات PDF متاحة حالياً</p>
@@ -398,7 +443,14 @@
 document.addEventListener("DOMContentLoaded", function () {
   const container = document.getElementById("pdfsContainer");
   const noPdfsMessage = document.getElementById("noPdfsMessage");
+  const loaderContainer = document.getElementById("loaderContainer");
   const searchInput = document.getElementById("searchInput");
+  
+  // إظهار حلقة التحميل وإخفاء العناصر الأخرى
+  loaderContainer.style.display = "flex";
+  container.style.display = "none";
+  noPdfsMessage.style.display = "none";
+  
   let allPdfs = [];
 
   searchInput.addEventListener("input", function() {
@@ -414,9 +466,11 @@ document.addEventListener("DOMContentLoaded", function () {
   function renderPdfs(pdfs) {
     if (!pdfs.length) {
       container.innerHTML = "";
+      container.style.display = "none";
       noPdfsMessage.style.display = "block";
       return;
     }
+    
     noPdfsMessage.style.display = "none";
     let html = "";
 
@@ -433,7 +487,6 @@ document.addEventListener("DOMContentLoaded", function () {
             <span class="pdf-category">${pdf.category || 'ملف تعليمي'}</span>
             <span style="color: #95a5a6;">
               <i class="fas fa-file-download" style="margin-left: 5px;"></i>
-              ${Math.floor(Math.random() * 500) + 50} تحميل
             </span>
           </div>
           <button class="download-btn" onclick="window.open('${pdf.url}', '_blank')">
@@ -444,21 +497,37 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     container.innerHTML = html;
+    container.style.display = "grid";
   }
 
-  fetch('https://script.google.com/macros/s/AKfycbyjm9qCqziWYadn0pxfhI5agbxFngP--Mu9bQTkBrIA0j7tX2mFvL5W9IIEeW0J8AIp/exec')
-    .then(res => res.json())
-    .then(data => {
-      allPdfs = data;
-      renderPdfs(allPdfs);
-    })
-    .catch(err => {
-      console.error("خطأ أثناء جلب البيانات:", err);
-      noPdfsMessage.style.display = "block";
-    });
+  // محاكاة جلب البيانات مع تأخير لمحاكاة الشبكة
+  setTimeout(() => {
+    fetch('https://script.google.com/macros/s/AKfycbyjm9qCqziWYadn0pxfhI5agbxFngP--Mu9bQTkBrIA0j7tX2mFvL5W9IIEeW0J8AIp/exec')
+      .then(res => res.json())
+      .then(data => {
+        // إخفاء حلقة التحميل
+        loaderContainer.style.display = "none";
+        
+        if (data && data.length > 0) {
+          allPdfs = data;
+          renderPdfs(allPdfs);
+        } else {
+          noPdfsMessage.style.display = "block";
+        }
+      })
+      .catch(err => {
+        console.error("خطأ أثناء جلب البيانات:", err);
+        loaderContainer.style.display = "none";
+        noPdfsMessage.style.display = "block";
+      });
+  }, 1500); // تأخير لمحاكاة جلب البيانات من الشبكة
 });
+        // إدارة الجلسة للزيارة الأولى
+        if (!sessionStorage.getItem('visited')) {
+            sessionStorage.setItem('visited', 'true');
+            window.location.href = 'index.html';
+        }
 </script>
-
 
 </body>
 </html>
