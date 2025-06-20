@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Mr Lio - الفيديوهات التعليمية</title>
+<title>Mr Bio - الفيديوهات التعليمية</title>
 <style>
   /* الأنماط الأساسية المحسنة */
   * {
@@ -352,6 +352,41 @@
       font-size: 28px;
     }
   }
+  
+  /* حلقة التحميل */
+  .loader-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .loader {
+    width: 60px;
+    height: 60px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 5px solid #f39c12;
+    animation: spin 1.5s linear infinite;
+    margin-bottom: 20px;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .loader-text {
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
@@ -360,7 +395,7 @@
 <header>
   <div class="container">
     <div class="header-content">
-      <div class="logo">Mr Lio</div>
+      <div class="logo">Mr Bio</div>
       <div class="nav-buttons">
         <button class="home-btn" onclick="window.location.href='startL.html'">
           <i class="fas fa-home"></i> الصفحة الرئيسية
@@ -377,7 +412,17 @@
 <section class="videos-section">
   <div class="container">
     <h2 class="section-title">الفيديوهات التعليمية</h2>
-    <div class="videos-grid" id="videosContainer"></div>
+    
+    <!-- حاوية حلقة التحميل -->
+    <div class="loader-container" id="loaderContainer">
+      <div class="loader"></div>
+      <div class="loader-text">جاري تحميل الفيديوهات...</div>
+    </div>
+    
+    <!-- حاوية الفيديوهات (مخفية في البداية) -->
+    <div class="videos-grid" id="videosContainer" style="display:none;"></div>
+    
+    <!-- رسالة عدم وجود فيديوهات -->
     <div class="no-videos" id="noVideosMessage" style="display:none;">
       <div class="no-videos-icon"><i class="fas fa-video-slash"></i></div>
       <p>لا توجد فيديوهات متاحة حالياً</p>
@@ -390,9 +435,14 @@
 document.addEventListener("DOMContentLoaded", function () {
   const container = document.getElementById("videosContainer");
   const noVideosMessage = document.getElementById("noVideosMessage");
-  
-  // تأثير البحث المحسن
+  const loaderContainer = document.getElementById("loaderContainer");
   const searchInput = document.getElementById("searchInput");
+  
+  // إظهار حلقة التحميل وإخفاء العناصر الأخرى في البداية
+  loaderContainer.style.display = "flex";
+  container.style.display = "none";
+  noVideosMessage.style.display = "none";
+  
   let allVideos = [];
   
   searchInput.addEventListener("input", function() {
@@ -407,6 +457,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function renderVideos(videos) {
     if (!videos.length) {
       container.innerHTML = "";
+      container.style.display = "none";
       noVideosMessage.style.display = "block";
       return;
     }
@@ -430,7 +481,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <span class="video-category">فيديو تعليمي</span>
             <span style="color: #95a5a6;">
               <i class="fas fa-eye" style="margin-left: 5px;"></i>
-              ${Math.floor(Math.random() * 1000) + 100} مشاهدة
+              ${Math.floor(Math.random() * 5000) + 1000} مشاهدة
             </span>
           </div>
         </div>
@@ -438,20 +489,35 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     
     container.innerHTML = html;
+    container.style.display = "grid";
   }
   
   // جلب البيانات من Google Apps Script
   fetch("https://script.google.com/macros/s/AKfycbxIAo-AmGUVngrHmB4kDbBrD7cO7wInoyqzsmyxkirOf0mZlYV1gkunPU9d1zT73Qup/exec")
     .then(res => res.json())
     .then(data => {
-      allVideos = data;
-      renderVideos(allVideos);
+      // إخفاء حلقة التحميل
+      loaderContainer.style.display = "none";
+      
+      if (data && data.length > 0) {
+        allVideos = data;
+        renderVideos(allVideos);
+      } else {
+        noVideosMessage.style.display = "block";
+      }
     })
     .catch(err => {
       console.error("Error fetching videos:", err);
+      loaderContainer.style.display = "none";
       noVideosMessage.style.display = "block";
     });
 });
+
+// إدارة الجلسة للزيارة الأولى
+if (!sessionStorage.getItem('visited')) {
+  sessionStorage.setItem('visited', 'true');
+  window.location.href = 'index.html';
+}
 </script>
 
 </body>
