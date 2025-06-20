@@ -389,6 +389,75 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
         }
         
+        /* زر الحساب والقائمة المنسدلة - من start.html */
+        .account-menu {
+            position: fixed;
+            top: 25px;
+            left: 25px;
+            z-index: 1000;
+        }
+        
+        .profile-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+            /* استخدام صورة ثابتة بدلاً من الأحرف الأولى */
+            background-image: url("png-clipart-computer-icons-login-person-user-avatar-log-smiley-desktop-wallpaper.png");
+        }
+        
+        .profile-image:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(0, 180, 216, 0.4);
+        }
+        
+        .account-dropdown {
+            position: absolute;
+            top: 65px;
+            left: 0;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 1rem;
+            min-width: 200px;
+            display: none;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .account-dropdown.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .dropdown-item {
+            padding: 0.8rem 1rem;
+            color: white;
+            text-decoration: none;
+            display: block;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+        
+        .dropdown-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
         /* التصميم للجوال */
         @media (max-width: 992px) {
             .container {
@@ -477,6 +546,17 @@
     </style>
 </head>
 <body>
+    <!-- زر الحساب والقائمة المنسدلة - من start.html -->
+    <div class="account-menu">
+        <div class="profile-image" id="profileImage"></div>
+        <div class="account-dropdown" id="accountDropdown">
+            <div class="dropdown-item" style="color:#90e0ef;pointer-events:none;">الحساب</div>
+            <a href="#" class="dropdown-item" id="supportLink">الدعم</a>
+            <a href="index.html" class="dropdown-item">تسجيل الخروج</a>
+            <div class="dropdown-item" style="font-size:0.8em;opacity:0.7;text-align:center;">Mr Bio</div>
+        </div>
+    </div>
+
     <div class="container">
         <!-- الجانب الأيسر مع الخلفية المنحرفة والمحتوى -->
         <div class="left-section">
@@ -575,7 +655,7 @@
     </div>
   </div>
 </a>
-
+            </div>
             
             <div class="footer">
                 <p>جميع الحقوق محفوظة © 2025 Mr Bio</p>
@@ -615,6 +695,27 @@
                     }, 200 * index);
                 });
             }, 500);
+            
+            // إدارة الجلسة للزيارة الأولى
+            if (!sessionStorage.getItem('visited')) {
+                sessionStorage.setItem('visited', 'true');
+                window.location.href = 'index.html';
+            }
+        });
+        
+        // كود زر الحساب والقائمة المنسدلة - من start.html
+        const profileImageEl = document.getElementById("profileImage");
+        const accountDropdownEl = document.getElementById("accountDropdown");
+
+        profileImageEl.addEventListener("click", () => {
+            accountDropdownEl.classList.toggle("show");
+        });
+
+        // إغلاق القائمة المنسدلة عند النقر خارجها
+        document.addEventListener('click', (event) => {
+            if (!profileImageEl.contains(event.target) && !accountDropdownEl.contains(event.target)) {
+                accountDropdownEl.classList.remove('show');
+            }
         });
     </script>
 </body>
